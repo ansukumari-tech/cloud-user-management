@@ -23,10 +23,11 @@ It is designed for deployment in a cloud environment with secure configuration u
 - POST /predict
 
 ## Technology Stack
-Backend: Python, Flask
-Authentication: Flask-JWT-Extended (JWT Tokens)
-Database: SQLite (development), PostgreSQL (cloud-ready)
-ORM: SQLAlchemy
-Security: Werkzeug Password Hashing
-Testing: Postman
-Version Control: Git & GitHub
+- Backend: Python, Flask
+- Authentication: Flask-JWT-Extended (JWT Tokens)
+- Database: SQLite (development), PostgreSQL (cloud-ready)
+- ORM: SQLAlchemy
+- Security: Werkzeug Password Hashing
+- Testing: Postman
+- Version Control: Git & GitHub
+

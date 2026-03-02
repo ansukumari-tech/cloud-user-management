@@ -1,10 +1,7 @@
 # ☁️ Cloud User Management System – Backend API
-
-A scalable and secure cloud-based user management system developed using Flask.
-This project implements JWT authentication, role-based access control (RBAC), and CRUD operations for managing users, following best practices in backend API design and security.
+Live Demo: https://cloud-user-management.onrender.com
 
 # 📌 Project Overview
-
 The Cloud User Management System provides a RESTful backend service that allows users to register, authenticate, and be managed based on roles (Admin/User).
 It is designed for deployment in a cloud environment with secure configuration using environment variables.
 
@@ -30,3 +27,4 @@ It is designed for deployment in a cloud environment with secure configuration u
 - Security: Werkzeug Password Hashing
 - Testing: Postman
 - Version Control: Git & GitHub
+

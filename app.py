@@ -10,6 +10,10 @@ app.config.from_object(Config)
 db.init_app(app)
 jwt = JWTManager(app)
 
+# CREATE TABLES
+with app.app_context():
+    db.create_all()
+
 # Create database tables
 from functools import wraps
 from flask import jsonify
@@ -44,12 +48,12 @@ def register():
     if User.query.filter_by(username=data["username"]).first():
         return jsonify({"msg": "User already exists"}), 400
 
-    # Create new user (default role = user)
+    # Create new user
     new_user = User(
         username=data["username"],
-        password=generate_password_hash(data["password"]),
         role=data.get("role", "user")
     )
+    new_user.set_password(data["password"])
 
     db.session.add(new_user)
     db.session.commit()

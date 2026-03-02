@@ -30,4 +30,3 @@ It is designed for deployment in a cloud environment with secure configuration u
 - Security: Werkzeug Password Hashing
 - Testing: Postman
 - Version Control: Git & GitHub
-

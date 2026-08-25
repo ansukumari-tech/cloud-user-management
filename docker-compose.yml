@@ -1,0 +1,59 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: auth_service
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  auth-service:
+    build: ./auth-service
+    restart: unless-stopped
+    environment:
+      SECRET_KEY: ${SECRET_KEY}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      DATABASE_URL: postgresql+psycopg2://postgres:postgres@db:5432/auth_service
+      INTERNAL_SERVICE_KEY: ${INTERNAL_SERVICE_KEY}
+    depends_on:
+      db:
+        condition: service_healthy
+    # Not published to the host — only reachable inside the docker network,
+    # via the gateway or directly by admin-service.
+    expose:
+      - "5000"
+
+  admin-service:
+    build: ./admin-service
+    restart: unless-stopped
+    environment:
+      SECRET_KEY: ${SECRET_KEY}
+      DEBUG: "False"
+      ALLOWED_HOSTS: "*"
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      AUTH_SERVICE_URL: http://auth-service:5000
+      INTERNAL_SERVICE_KEY: ${INTERNAL_SERVICE_KEY}
+      CORS_ALLOW_ALL_ORIGINS: "True"
+    depends_on:
+      - auth-service
+    expose:
+      - "8000"
+
+  gateway:
+    build: ./gateway
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - auth-service
+      - admin-service
+
+volumes:
+  postgres_data:
